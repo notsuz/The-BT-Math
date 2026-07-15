@@ -136,6 +136,14 @@ STORAGES = {
     "staticfiles": {"BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"},
 }
 
+# django-jazzmin's admin/base.html does `{% static 'vendor/bootswatch' %}` on
+# a bare directory (used as a JS-side base path for theme switching, not a
+# real file), which trips the manifest storage's strict mode with
+# "Missing staticfiles manifest entry for 'vendor/bootswatch'" -> 500 on
+# every admin page. Falling back to the unhashed URL for unknown entries
+# fixes it without giving up cache-busting for everything else.
+WHITENOISE_MANIFEST_STRICT = False
+
 # Publicly served media (thumbnails, free-preview files).
 MEDIA_URL = "media/"
 MEDIA_ROOT = BASE_DIR / "media"
