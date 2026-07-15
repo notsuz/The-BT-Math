@@ -67,11 +67,19 @@ class EsewaCallbackView(LoginRequiredMixin, View):
             Order, transaction_uuid=payload.get("transaction_uuid"), student=request.user
         )
 
-        if (
-            payload.get("status") == "COMPLETE"
-            and esewa.verify_callback_signature(payload)
-            and esewa.check_transaction_status(order)
-        ):
+        status_ok = payload.get("status") == "COMPLETE"
+        signature_ok = esewa.verify_callback_signature(payload) if status_ok else None
+        try:
+            gateway_ok = esewa.check_transaction_status(order) if (status_ok and signature_ok) else None
+        except Exception:
+            logger.exception("eSewa status-check request failed for order %s", order.transaction_uuid)
+            gateway_ok = False
+        logger.warning(
+            "eSewa callback debug: status_ok=%s signature_ok=%s gateway_ok=%s payload=%s",
+            status_ok, signature_ok, gateway_ok, payload,
+        )
+
+        if status_ok and signature_ok and gateway_ok:
             order.mark_success(gateway_reference=payload.get("transaction_code", ""))
             return _success_redirect(order)
 
