@@ -1,0 +1,29 @@
+<footer class="bg-dark text-light-emphasis mt-5 py-5">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-md-4">
+                <h5 class="text-white">The BT Math</h5>
+                <p class="small">Chapter-wise notes, past questions and tutorials for +2, IOE, Bachelors and Masters students in Nepal.</p>
+            </div>
+            <div class="col-md-4">
+                <h6 class="text-white">Explore</h6>
+                <ul class="list-unstyled small">
+                    {% for category in nav_categories %}
+                    <li><a class="link-light link-underline-opacity-0" href="{{ category.get_absolute_url }}">{{ category.name }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <h6 class="text-white">Company</h6>
+                <ul class="list-unstyled small">
+                    <li><a class="link-light link-underline-opacity-0" href="{% url 'pages:about' %}">About</a></li>
+                    <li><a class="link-light link-underline-opacity-0" href="{% url 'pages:contact' %}">Contact</a></li>
+                    <li><a class="link-light link-underline-opacity-0" href="{% url 'pages:terms' %}">Terms</a></li>
+                    <li><a class="link-light link-underline-opacity-0" href="{% url 'pages:privacy' %}">Privacy Policy</a></li>
+                </ul>
+            </div>
+        </div>
+        <hr>
+        <p class="small text-center mb-0">&copy; {% now "Y" %} The BT Math. All rights reserved.</p>
+    </div>
+</footer>

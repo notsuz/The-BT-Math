@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% block title %}Search Notes - The BT Math{% endblock %}
+{% block content %}
+<div class="container py-5">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'pages:home' %}">Home</a></li>
+            <li class="breadcrumb-item active">Search Notes</li>
+        </ol>
+    </nav>
+    <h1 class="mb-4">Search Notes</h1>
+
+    <form method="get" class="row g-2 mb-4">
+        <div class="col-md-7">
+            <input type="text" name="q" value="{{ query }}" class="form-control"
+                   placeholder="Search by subject name, e.g. &quot;Digital Logic&quot;">
+        </div>
+        <div class="col-md-3">
+            <select name="program" class="form-select">
+                <option value="">All programs</option>
+                {% for program in programs %}
+                <option value="{{ program.id }}" {% if selected_program_id == program.id|stringformat:"s" %}selected{% endif %}>
+                    {{ program.category.name }} / {{ program.name }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-primary w-100">Search</button>
+        </div>
+    </form>
+
+    {% if query or selected_program_id %}
+    <p class="text-muted">
+        {{ page_obj.paginator.count }} result{{ page_obj.paginator.count|pluralize }} found
+        {% if query %}for "<strong>{{ query }}</strong>"{% endif %}
+    </p>
+    {% endif %}
+
+    <div class="row g-4">
+        {% for course in courses %}
+        <div class="col-md-3 col-sm-6">
+            <div class="card course-card h-100 shadow-sm">
+                {% if course.thumbnail %}
+                <img src="{{ course.thumbnail.url }}" class="card-img-top" alt="{{ course.title }}">
+                {% else %}
+                <div class="card-img-top d-flex align-items-center justify-content-center">
+                    <i class="bi bi-journal-bookmark display-6 text-secondary"></i>
+                </div>
+                {% endif %}
+                <div class="card-body d-flex flex-column">
+                    <p class="text-muted small mb-1">{{ course.program.category.name }} / {{ course.program.name }}</p>
+                    <h6 class="card-title">{{ course.title }}</h6>
+                    <p class="fw-bold mb-3">
+                        {% if course.is_free %}Free{% else %}Rs. {{ course.price }}{% endif %}
+                    </p>
+                    <a href="{{ course.get_absolute_url }}" class="btn btn-outline-primary btn-sm mt-auto">View Notes</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-muted">
+            {% if query or selected_program_id %}
+                No subjects found. Try a different search term.
+            {% else %}
+                Type a subject name above to find its notes.
+            {% endif %}
+        </p>
+        {% endfor %}
+    </div>
+
+    {% if is_paginated %}
+    <nav class="mt-4" aria-label="Search results pages">
+        <ul class="pagination">
+            {% if page_obj.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?q={{ query }}&amp;program={{ selected_program_id }}&amp;page={{ page_obj.previous_page_number }}">Previous</a>
+            </li>
+            {% endif %}
+            <li class="page-item disabled"><span class="page-link">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span></li>
+            {% if page_obj.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?q={{ query }}&amp;program={{ selected_program_id }}&amp;page={{ page_obj.next_page_number }}">Next</a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}{{ category.name }} - The BT Math{% endblock %}
+{% block content %}
+<div class="container py-5">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'pages:home' %}">Home</a></li>
+            <li class="breadcrumb-item active">{{ category.name }}</li>
+        </ol>
+    </nav>
+    <h1 class="mb-3">{{ category.name }}</h1>
+    {% if category.description %}<p class="text-muted mb-4">{{ category.description }}</p>{% endif %}
+
+    <div class="row g-4">
+        {% for program in category.programs.all %}
+        <div class="col-md-4 col-sm-6">
+            <a href="{{ program.get_absolute_url }}" class="text-decoration-none">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ program.name }}</h5>
+                        <p class="card-text text-muted small">{{ program.courses.count }} course{{ program.courses.count|pluralize }}</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        {% empty %}
+        <p class="text-muted">No programs added yet for this category.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

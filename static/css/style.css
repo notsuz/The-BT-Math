@@ -1,0 +1,37 @@
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1 0 auto;
+}
+
+.hero {
+    background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+    color: #fff;
+}
+
+.course-card .card-img-top {
+    height: 160px;
+    object-fit: cover;
+    background-color: #e9ecef;
+}
+
+.chapter-locked {
+    opacity: 0.65;
+}
+
+/* Fallback styling for Django's built-in auth forms (password reset), which
+   don't carry Bootstrap's form-control class on their widgets. */
+form input[type="text"],
+form input[type="email"],
+form input[type="password"] {
+    display: block;
+    width: 100%;
+    padding: 0.375rem 0.75rem;
+    border: 1px solid #ced4da;
+    border-radius: 0.375rem;
+}
+

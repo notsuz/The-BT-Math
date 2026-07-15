@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Payment Successful - The BT Math{% endblock %}
+{% block content %}
+<div class="container py-5 text-center">
+    <i class="bi bi-check-circle-fill text-success display-1"></i>
+    <h1 class="mt-3">Payment Successful!</h1>
+    {% if order %}
+    <p class="lead">You now have lifetime access to <strong>{{ order.course.title }}</strong>.</p>
+    <a href="{{ order.course.get_absolute_url }}" class="btn btn-primary btn-lg mt-3">Start Learning</a>
+    {% else %}
+    <p class="lead">Your payment was received.</p>
+    {% endif %}
+    <div>
+        <a href="{% url 'orders:my_courses' %}" class="btn btn-link mt-2">Go to My Courses</a>
+    </div>
+</div>
+{% endblock %}

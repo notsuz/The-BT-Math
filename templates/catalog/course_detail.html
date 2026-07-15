@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% block title %}{{ course.title }} - The BT Math{% endblock %}
+{% block content %}
+<div class="container py-5">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'pages:home' %}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{{ course.program.category.get_absolute_url }}">{{ course.program.category.name }}</a></li>
+            <li class="breadcrumb-item"><a href="{{ course.program.get_absolute_url }}">{{ course.program.name }}</a></li>
+            <li class="breadcrumb-item active">{{ course.title }}</li>
+        </ol>
+    </nav>
+
+    <div class="row g-5">
+        <div class="col-lg-8">
+            <h1 class="mb-3">{{ course.title }}</h1>
+            <p class="text-muted">{{ course.description }}</p>
+
+            <h4 class="mt-4 mb-3">Course Content</h4>
+            <div class="accordion" id="chaptersAccordion">
+                {% for chapter in chapters %}
+                <div class="accordion-item {% if not chapter.is_free and not has_access %}chapter-locked{% endif %}">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button {% if not forloop.first %}collapsed{% endif %}" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#chapter{{ chapter.id }}">
+                            {% if chapter.is_free %}<i class="bi bi-unlock-fill text-success me-2"></i>
+                            {% elif not has_access %}<i class="bi bi-lock-fill text-secondary me-2"></i>
+                            {% endif %}
+                            {{ chapter.title }}
+                        </button>
+                    </h2>
+                    <div id="chapter{{ chapter.id }}" class="accordion-collapse collapse {% if forloop.first %}show{% endif %}"
+                         data-bs-parent="#chaptersAccordion">
+                        <div class="accordion-body">
+                            <ul class="list-group list-group-flush">
+                                {% for item in chapter.content_items.all %}
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <span>
+                                        {% if item.content_type == "pdf_notes" %}<i class="bi bi-file-earmark-pdf text-danger me-2"></i>
+                                        {% elif item.content_type == "past_question" %}<i class="bi bi-file-earmark-text text-primary me-2"></i>
+                                        {% elif item.content_type == "tutorial" %}<i class="bi bi-play-circle text-success me-2"></i>
+                                        {% else %}<i class="bi bi-lightbulb text-warning me-2"></i>{% endif %}
+                                        {{ item.title }}
+                                        <span class="badge bg-light text-dark ms-2">{{ item.get_content_type_display }}</span>
+                                    </span>
+                                    {% if item.is_free or chapter.is_free or has_access %}
+                                        {% if item.content_type == "tutorial" and item.video_url %}
+                                        <a href="{{ item.video_url }}" target="_blank" rel="noopener" class="btn btn-sm btn-outline-success">Watch</a>
+                                        {% elif item.file %}
+                                        <a href="{% url 'catalog:content_download' item.id %}" class="btn btn-sm btn-outline-primary">View</a>
+                                        {% endif %}
+                                    {% else %}
+                                        <i class="bi bi-lock-fill text-muted"></i>
+                                    {% endif %}
+                                </li>
+                                {% empty %}
+                                <li class="list-group-item text-muted">No content added yet.</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <p class="text-muted">Chapters will be added soon.</p>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card shadow-sm sticky-top" style="top: 90px;">
+                {% if course.thumbnail %}
+                <img src="{{ course.thumbnail.url }}" class="card-img-top" alt="{{ course.title }}">
+                {% endif %}
+                <div class="card-body text-center">
+                    <h3 class="fw-bold mb-3">
+                        {% if course.is_free %}Free{% else %}Rs. {{ course.price }}{% endif %}
+                    </h3>
+                    {% if has_access %}
+                    <p class="text-success"><i class="bi bi-check-circle-fill"></i> You have full access to this course.</p>
+                    {% elif course.is_free %}
+                    <p class="text-muted small">This course is free - expand a chapter above to view its content.</p>
+                    {% else %}
+                    <a href="{% url 'orders:checkout' course.pk %}" class="btn btn-primary btn-lg w-100">Buy Now</a>
+                    <p class="text-muted small mt-2">One-time payment - lifetime access via eSewa or Khalti.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

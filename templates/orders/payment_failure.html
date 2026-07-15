@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Payment Failed - The BT Math{% endblock %}
+{% block content %}
+<div class="container py-5 text-center">
+    <i class="bi bi-x-circle-fill text-danger display-1"></i>
+    <h1 class="mt-3">Payment Failed</h1>
+    <p class="lead">Something went wrong and your payment could not be completed.</p>
+    {% if order %}
+    <a href="{% url 'orders:checkout' order.course.pk %}" class="btn btn-primary btn-lg mt-3">Try Again</a>
+    {% else %}
+    <a href="{% url 'pages:home' %}" class="btn btn-primary btn-lg mt-3">Back to Home</a>
+    {% endif %}
+</div>
+{% endblock %}
