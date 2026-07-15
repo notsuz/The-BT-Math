@@ -292,6 +292,28 @@ JAZZMIN_UI_TWEAKS = {
 }
 
 # ---------------------------------------------------------------------------
+# Logging
+# ---------------------------------------------------------------------------
+# Django's own default LOGGING config only sends request errors to the
+# console when DEBUG=True, so on a production host (DEBUG=False) a 500 error
+# leaves no trace anywhere you can see it. Send them to stderr unconditionally
+# so they show up in Render's/PythonAnywhere's log viewers.
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {"class": "logging.StreamHandler"},
+    },
+    "loggers": {
+        "django.request": {
+            "handlers": ["console"],
+            "level": "ERROR",
+            "propagate": False,
+        },
+    },
+}
+
+# ---------------------------------------------------------------------------
 # Security defaults (tightened further in prod.py)
 # ---------------------------------------------------------------------------
 SECURE_BROWSER_XSS_FILTER = True
