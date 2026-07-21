@@ -72,7 +72,7 @@ class Course(models.Model):
         unique_together = ["program", "slug"]
 
     def __str__(self):
-        return self.title
+        return f"{self.program.category.name} › {self.program.name} › {self.title}"
 
     def save(self, *args, **kwargs):
         if not self.slug:

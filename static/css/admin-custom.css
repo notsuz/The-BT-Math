@@ -1,0 +1,153 @@
+/* UI polish for the Jazzmin-based Django admin. Loaded on every admin page
+   via JAZZMIN_SETTINGS["custom_css"]. Kept additive/defensive - only tweaks
+   spacing, contrast and inline-formset readability, no structural changes. */
+
+.content-wrapper .card {
+  border-radius: 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.content-wrapper .card-header {
+  border-radius: 10px 10px 0 0;
+  font-weight: 600;
+}
+
+/* Tabular inline formsets: Chapters on the Course page, Content Items on the
+   Chapter page. These are the main "add related item" surfaces admins use. */
+.tabular.inline-related {
+  margin-bottom: 1.5rem;
+}
+
+.tabular.inline-related table {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.tabular.inline-related thead th {
+  background: rgba(0, 0, 0, 0.03);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.tabular.inline-related tbody tr:hover td {
+  background: rgba(13, 110, 253, 0.05);
+}
+
+.tabular.inline-related .add-row a {
+  font-weight: 600;
+}
+
+/* Form field spacing/readability */
+.form-row,
+.field-box {
+  margin-bottom: 0.85rem;
+}
+
+.form-row label,
+.field-box label {
+  font-weight: 600;
+}
+
+/* Select2 (used by autocomplete_fields, and by Jazzmin on every other
+   <select> too - see change_form.js) - align height with other inputs */
+.select2-container .select2-selection--single {
+  height: calc(2.25rem + 2px) !important;
+  display: flex;
+  align-items: center;
+}
+
+/* Keep the Save/Save-and-add-another bar visible while scrolling a long form */
+.submit-row {
+  position: sticky;
+  bottom: 0;
+  background: inherit;
+  padding: 0.75rem 1rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  z-index: 20;
+}
+
+/* Changelist filter sidebar */
+#changelist-filter h3 {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  opacity: 0.7;
+}
+
+/* Changelist toolbar: this is the one and only search bar per page now
+   (JAZZMIN_SETTINGS["search_model"] is unset, so Jazzmin doesn't also add
+   its own per-model search boxes to the top navbar). Text search, filter
+   dropdowns and the Search button that submits them all live in one row. */
+#changelist-search input#searchbar {
+  min-width: 220px;
+}
+
+#changelist-search .select2-container {
+  min-width: 10rem;
+}
+
+#changelist-search input#searchbar,
+#changelist-search button[type="submit"] {
+  height: calc(2.25rem + 2px);
+  border-radius: 0.25rem;
+}
+
+/* Jazzmin 3.x drives dark mode via [data-bs-theme="dark"] on <html>
+   (Bootstrap 5's native mechanism), not the old AdminLTE .dark-mode class. */
+[data-bs-theme="dark"] .tabular.inline-related thead th {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+[data-bs-theme="dark"] .submit-row {
+  border-top-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Category -> Program -> Course cascade on the Chapter add/change form */
+#chapter-course-preview {
+  margin: 0.35rem 0 1rem;
+  padding: 0.6rem 0.85rem;
+  border-radius: 8px;
+  background: rgba(13, 110, 253, 0.06);
+  border: 1px dashed rgba(13, 110, 253, 0.25);
+  font-size: 0.85rem;
+}
+
+#chapter-course-preview ul {
+  margin: 0.35rem 0 0;
+  padding-left: 1.2rem;
+}
+
+#chapter-course-preview:empty {
+  display: none;
+}
+
+[data-bs-theme="dark"] #chapter-course-preview {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Django's admin/css/autocomplete.css (used by autocomplete_fields, e.g.
+   Program on Course) styles the select2 box entirely via CSS custom
+   properties normally defined in admin/css/base.css - a file Jazzmin never
+   loads since it replaces the whole admin theme. Undefined, those vars make
+   the box's border/background rules invalid, leaving only the arrow visible. */
+:root {
+  --border-color: #ccc;
+  --body-bg: #fff;
+  --body-fg: #333;
+  --body-quiet-color: #666;
+  --darkened-bg: #f8f8f8;
+  --selected-bg: #e4e4e4;
+  --primary: #79aec8;
+  --primary-fg: #fff;
+  --error-fg: #ba2121;
+}
+
+[data-bs-theme="dark"] {
+  --border-color: #494949;
+  --body-bg: #1b1b1b;
+  --body-fg: #eeeeee;
+  --body-quiet-color: #aaaaaa;
+  --darkened-bg: #212121;
+  --selected-bg: #2b2b2b;
+}

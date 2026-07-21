@@ -1,0 +1,6 @@
+{% extends "admin/change_form.html" %}
+
+{% block content %}
+{{ block.super }}
+{{ chapters_by_course|json_script:"chapters-by-course-data" }}
+{% endblock %}

@@ -1,9 +1,11 @@
 <footer class="bg-dark text-light-emphasis mt-5 py-5">
     <div class="container">
         <div class="row g-4">
-            <div class="col-md-4">
+            <div class="col-md-4 ">
                 <h5 class="text-white">The BT Math</h5>
                 <p class="small">Chapter-wise notes, past questions and tutorials for +2, IOE, Bachelors and Masters students in Nepal.</p>
+                <!-- Social Links -->
+                
             </div>
             <div class="col-md-4">
                 <h6 class="text-white">Explore</h6>
@@ -13,15 +15,40 @@
                     {% endfor %}
                 </ul>
             </div>
-            <div class="col-md-4">
-                <h6 class="text-white">Company</h6>
+            <!-- <div class="col-md-3">
+                <h6 class="text-white">Quick Links</h6>
                 <ul class="list-unstyled small">
                     <li><a class="link-light link-underline-opacity-0" href="{% url 'pages:about' %}">About</a></li>
                     <li><a class="link-light link-underline-opacity-0" href="{% url 'pages:contact' %}">Contact</a></li>
                     <li><a class="link-light link-underline-opacity-0" href="{% url 'pages:terms' %}">Terms</a></li>
                     <li><a class="link-light link-underline-opacity-0" href="{% url 'pages:privacy' %}">Privacy Policy</a></li>
                 </ul>
+            </div> -->
+
+            <div class="col-md-4">
+                <h6 class="text-white">Social Links</h6>
+                <ul class="list-unstyled small">
+                    
+                    <a href="mailto:your-sirbt11@gmail.com" class="text-white me-3" title="Email">
+                        <i class="fas fa-envelope fa-lg"></i>
+                    </a>
+                    <a href="https://www.facebook.com/people/The-BT-Math/61570748061460/" target="_blank" class="text-white me-3" title="Facebook">
+                        <i class="fab fa-facebook fa-lg"></i>
+                    </a>
+                    <a href="https://www.youtube.com/@thebtmath1287" target="_blank" class="text-white me-3" title="YouTube">
+                        <i class="fab fa-youtube fa-lg"></i>
+                    </a>
+                    <a href="https://wa.me/9813074270" target="_blank" class="text-white me-3" title="WhatsApp">
+                        <i class="fab fa-whatsapp fa-lg"></i>
+                    </a>
+                    <a href="viber://chat?number=9813074270" target="_blank" class="text-white" title="Viber">
+                        <i class="fab fa-viber fa-lg"></i>
+                    </a>
+            
+                </ul>
             </div>
+
+            
         </div>
         <hr>
         <p class="small text-center mb-0">&copy; {% now "Y" %} The BT Math. All rights reserved.</p>

@@ -57,7 +57,11 @@ class MyCoursesView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["recent_orders"] = Order.objects.filter(student=self.request.user)[:10]
+        # Only show successful orders in recent orders
+        context["recent_orders"] = Order.objects.filter(
+            student=self.request.user, 
+            status=Order.Status.SUCCESS
+        )[:10]
         return context
 
 

@@ -234,7 +234,12 @@ JAZZMIN_SETTINGS = {
     "site_icon": None,
     "welcome_sign": f"Welcome to the {SITE_NAME} admin panel",
     "copyright": SITE_NAME,
-    "search_model": ["catalog.Course", "users.User", "orders.Order"],
+    # Jazzmin renders one navbar search bar per entry here, so listing
+    # several models produces several separate top-bar search boxes. Each
+    # changelist page already has its own search box + filters + Search
+    # button (see admin-custom.css), so skip the navbar ones entirely and
+    # keep a single search bar per page.
+    "search_model": None,
     "user_avatar": None,
     "topmenu_links": [
         {"name": "View Site", "url": "pages:home", "new_window": True},
@@ -260,7 +265,7 @@ JAZZMIN_SETTINGS = {
     "default_icon_parents": "fas fa-chevron-circle-right",
     "default_icon_children": "fas fa-circle",
     "related_modal_active": True,
-    "custom_css": None,
+    "custom_css": "css/admin-custom.css",
     "custom_js": None,
     "show_ui_builder": False,
     "changeform_format": "horizontal_tabs",
@@ -268,6 +273,7 @@ JAZZMIN_SETTINGS = {
 }
 
 JAZZMIN_UI_TWEAKS = {
+    "default_theme_mode": "dark",
     "navbar_small_text": False,
     "footer_small_text": False,
     "body_small_text": False,
@@ -288,7 +294,6 @@ JAZZMIN_UI_TWEAKS = {
     "sidebar_nav_legacy_style": False,
     "sidebar_nav_flat_style": True,
     "theme": "flatly",
-    "dark_mode_theme": "darkly",
     "button_classes": {
         "primary": "btn-primary",
         "secondary": "btn-secondary",
